@@ -8,9 +8,10 @@
         <version>2.6.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.generic</groupId>
+
+    <groupId>com.generic.spring-boot-starter-error-handler</groupId>
     <artifactId>spring-boot-starter-error-handler</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0-RELEASE</version>
     <name>spring-boot-starter-error-handler</name>
     <description>spring-boot-starter-error-handler</description>
     <properties>
@@ -39,11 +40,42 @@
         </dependency>
     </dependencies>
 
+
+    <developers>
+        <developer>
+            <name>Moises Kerschner</name>
+            <email>moises.kerschner@unochapeco.edu.br</email>
+            <url>https://github.com/moiseskers</url>
+        </developer>
+    </developers>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>http://www.opensource.org/licenses/mit-license.php</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub OWNER Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/moiseskers/spring-boot-starter-error-handler</url>
+        </repository>
+    </distributionManagement>
+
     <build>
         <plugins>
             <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.0</version>
+                <configuration>
+                    <target>${java.version}</target>
+                    <source>${java.version}</source>
+                    <encoding>UTF-8</encoding>
+                </configuration>
             </plugin>
         </plugins>
     </build>
