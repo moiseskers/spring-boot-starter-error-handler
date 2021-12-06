@@ -1,6 +1,6 @@
 package com.generic.springbootstartererrorhandler;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,8 +10,9 @@ import org.springframework.context.annotation.Configuration;
 public class Config {
 
     @Bean
-    @ConditionalOnProperty("error.handler.enabled")
+    @ConditionalOnExpression("'${error.handler.disabled}' != 'true'")
     public GlobalExceptionHandler enable() {
         return new GlobalExceptionHandler();
     }
+
 }
