@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-    <groupId>com.generic.spring-boot-starter-error-handler</groupId>
+    <groupId>com.generic.springbootstartererrorhandler</groupId>
     <artifactId>spring-boot-starter-error-handler</artifactId>
-    <version>1.0.0-RELEASE</version>
+    <version>1.0.1-RELEASE</version>
     <name>spring-boot-starter-error-handler</name>
     <description>spring-boot-starter-error-handler</description>
     <properties>
