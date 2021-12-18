@@ -42,7 +42,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
      */
     @Override
     protected ResponseEntity<Object> handleHttpMediaTypeNotSupported(HttpMediaTypeNotSupportedException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        logger.error("HttpMediaTypeNotSupportedException ex: {} headers: {}, status: {}, request: {}", ex, headers, status, request);
+        logger.error("HttpMediaTypeNotSupportedException headers: {}, status: {}, request: {}, ex: {} ", headers, status, request, ex);
         ApiError apiError = new ApiError(HttpStatus.UNSUPPORTED_MEDIA_TYPE, HttpStatus.UNSUPPORTED_MEDIA_TYPE.getReasonPhrase());
         return new ResponseEntity<>(apiError, apiError.getError());
     }
@@ -58,7 +58,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
      */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     protected ResponseEntity handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        logger.error("Bad request exception: {} headers: {}, status: {}, request: {}", ex, headers, status, request);
+        logger.error("Bad request exception headers: {}, status: {}, request: {}, ex: {}", headers, status, request, ex);
         ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, "Validation error");
         apiError.addValidationErrors(ex.getBindingResult().getFieldErrors());
         apiError.addValidationError(ex.getBindingResult().getGlobalErrors());
@@ -76,7 +76,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
      */
     @Override
     protected ResponseEntity handleMissingServletRequestParameter(MissingServletRequestParameterException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        logger.error("MissingServletRequestParameterException error ex {}, headers {} , status {} , request {}", ex, headers, status, request);
+        logger.error("MissingServletRequestParameterException error headers {} , status {} , request {}, ex {}", headers, status, request, ex);
         String error = ex.getParameterName() + " parameter is missing";
         var apiError = new ApiError(HttpStatus.BAD_REQUEST, error);
         return handleExceptionInternal(ex, apiError, headers, apiError.getError(), request);
@@ -118,12 +118,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleDataIntegrityViolation(DataIntegrityViolationException ex, WebRequest request) {
 
         if (ex.getCause() instanceof ConstraintViolationException) {
-            logger.error("DataIntegrityViolationException, database error ex: {} request {}", ex, request);
+            logger.error("DataIntegrityViolationException, database error request {}, ex: {}", request, ex);
             var apiError = new ApiError(HttpStatus.CONFLICT, "Database error");
             return new ResponseEntity<>(apiError, apiError.getError());
         }
 
-        logger.error("DataIntegrityViolationException ex: {} request {}", ex, request);
+        logger.error("DataIntegrityViolationException request {}, ex: {}", request, ex);
 
         var apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, "Data integrity violation");
         return new ResponseEntity<>(apiError, apiError.getError());
@@ -137,7 +137,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
      */
     @ExceptionHandler({MethodArgumentTypeMismatchException.class})
     public ResponseEntity<Object> handleMethodArgumentTypeMismatch(MethodArgumentTypeMismatchException ex, WebRequest request) {
-        logger.error("TypeMismatchException or MethodArgumentTypeMismatchException error ex: {} request: {}", ex, request);
+        logger.error("TypeMismatchException or MethodArgumentTypeMismatchException error request: {}, ex: {}", request, ex);
         var message = String.format("The parameter '%s' of value '%s' could not be converted to type '%s'", ex.getName(), ex.getValue(), ex.getRequiredType().getSimpleName());
         var apiError = new ApiError(HttpStatus.BAD_REQUEST, message);
         return new ResponseEntity<>(apiError, apiError.getError());
@@ -152,7 +152,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> handleAllUncaughtException(Exception ex, WebRequest request) {
 
-        logger.error("Unknown error occurred ex: {} request: {}", ex, request);
+        logger.error("Unknown error occurred request: {}, ex: {}", request, ex);
 
         if (ex instanceof ResponseStatusException) {
             var status = ((ResponseStatusException) ex).getStatus();
@@ -178,7 +178,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
      */
     @Override
     protected ResponseEntity<Object> handleHttpMessageNotWritable(HttpMessageNotWritableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        logger.error("Message Not Readable exception: {} headers: {}, status: {}, request: {}", ex, headers, status, request);
+        logger.error("Message Not Readable exception, headers: {}, status: {}, request: {}, ex: {}", headers, status, request, ex);
         var apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, "Error writing JSON output");
         return new ResponseEntity<>(apiError, apiError.getError());
     }
@@ -194,7 +194,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
      */
     @Override
     protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        logger.error("Message Not Readable exception: {} headers: {}, status: {}, request: {}", ex, headers, status, request);
+        logger.error("Message Not Readable exception, headers: {}, status: {}, request: {}, ex: {}", headers, status, request, ex);
         var message = String.format("Could not find the %s method for URL %s", ex.getHttpMethod(), ex.getRequestURL());
         ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, message);
         return new ResponseEntity<>(apiError, apiError.getError());
@@ -202,7 +202,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        logger.error("Message Not Readable exception: {} headers: {}, status: {}, request: {}", ex, headers, status, request);
+        logger.error("Message Not Readable exception, headers: {}, status: {}, request: {}, ex", headers, status, request, ex);
         var apiError = new ApiError(HttpStatus.BAD_REQUEST, "Malformed JSON request");
         return handleExceptionInternal(ex, apiError, headers, apiError.getError(), request);
     }
